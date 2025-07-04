@@ -7,10 +7,6 @@
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/yourname/restapi/build.yml)]()
 
-# RestAPI Order Management 🌟
-
-
-
 ## 📖 Overview
 
 The **Order Management REST API** is a Spring Boot-based application designed to manage users, products, orders, and order items for an e-commerce or similar system. It provides a robust, scalable backend with endpoints for CRUD operations, built with Java 17, Spring Boot, Spring Data JPA, and PostgreSQL. The API enforces validation, handles auditing (created/updated timestamps), and ensures data integrity with unique constraints and enum-based statuses.
