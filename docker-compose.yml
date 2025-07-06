@@ -40,8 +40,8 @@ services:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
-      retries: 15
-      start_period: 60s
+      retries: 20
+      start_period: 90s
     restart: unless-stopped
     networks:
       - app-network
