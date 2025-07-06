@@ -4,110 +4,116 @@
 ![Java](https://img.shields.io/badge/Java-17-blue)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.5-brightgreen)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue)
+![Docker](https://img.shields.io/badge/Docker-28.3-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/yourname/restapi/build.yml)]()
+[![Build Status](https://img.shields.io/github/actions/workflow/status/yourname/restapi/build.yml)](https://github.com/Dinidu21/restapi/actions)
 
 ## 📖 Overview
 
-The **Order Management REST API** is a Spring Boot-based application designed to manage users, products, orders, and order items for an e-commerce or similar system. It provides a robust, scalable backend with endpoints for CRUD operations, built with Java 17, Spring Boot, Spring Data JPA, and PostgreSQL. The API enforces validation, handles auditing (created/updated timestamps), and ensures data integrity with unique constraints and enum-based statuses.
+The **Order Management REST API** is a production-grade, Spring Boot-based backend designed for e-commerce and order management systems. Built with **Java 17**, **Spring Boot 3.2.5**, and **PostgreSQL 16**, it provides robust, scalable endpoints for managing users, products, orders, and order items. The API emphasizes clean code, data integrity, and performance, making it an ideal foundation for enterprise-grade applications or a learning resource for RESTful API development.
 
-This project is ideal for developers building e-commerce platforms, order management systems, or learning about RESTful API development with Spring Boot.
+This project showcases my expertise in designing and implementing secure, maintainable, and scalable REST APIs, with a focus on best practices in software engineering and modern deployment practices using Docker.
 
-## ✨ Features
+## ✨ Key Features
 
-- **User Management**: Create, read, update, and delete users with unique usernames and emails.
-- **Product Management**: Manage product inventory with details like name, description, price, and stock quantity.
-- **Order Processing**: Create and manage orders with associated order items, including automatic order number generation and subtotal calculations.
-- **Auditing**: Automatically tracks creation and update timestamps for users, products, and orders.
-- **Validation**: Ensures data integrity with constraints (e.g., unique email/username, valid email format, positive prices).
-- **API Documentation**: Interactive API documentation via Postman, available at [Postman Collection](https://documenter.getpostman.com/view/28172939/2sB34bM4AW).
+- **User Management**: CRUD operations for users with unique usernames and emails, including audit tracking.
+- **Product Management**: Inventory management with validation for product details (name, description, price, stock).
+- **Order Processing**: Automated order creation with atomic stock deduction and subtotal calculations.
+- **Standardized API Responses**: Consistent `ApiResponse<T>` structure for all endpoints.
+- **DTOs & Validation**: Use of Data Transfer Objects with `@Valid` and field-level constraints.
+- **Transactional Integrity**: `@Transactional` for atomic operations.
+- **Enums & Constraints**: Enums for statuses, validated in Java and SQL.
+- **Read-Only Queries**: Optimized with `@Transactional(readOnly = true)`.
+- **Error Handling**: Custom exceptions with appropriate HTTP status codes.
+- **Logging**: Comprehensive SLF4J logging.
+- **SQL-Level Integrity**: Foreign keys, unique constraints, and `CHECK` constraints.
+- **Scalable Pagination**: Spring Data `Pageable` for efficient list endpoints.
+- **Containerization**: Dockerized application with Docker Compose for easy deployment.
 
 ## 🛠️ Tech Stack
 
 - **Backend**: Java 17, Spring Boot 3.2.5, Spring Data JPA
 - **Database**: PostgreSQL 16
 - **Validation**: Jakarta Bean Validation
-- **API Testing**: Postman
 - **Logging**: SLF4J with Logback
 - **Build Tool**: Maven
+- **Containerization**: Docker, Docker Compose
+- **Testing**: Postman
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- **Java 17**: Ensure JDK 17 is installed. [Download](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
-- **Maven**: Install Maven for dependency management. [Download](https://maven.apache.org/download.cgi)
-- **PostgreSQL**: Install PostgreSQL 16. [Download](https://www.postgresql.org/download/)
-- **Postman**: Install Postman for API testing. [Download](https://www.postman.com/downloads/)
+- **Java 17**: [Download](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+- **Maven**: [Download](https://maven.apache.org/download.cgi)
+- **PostgreSQL 16**: [Download](https://www.postgresql.org/download/) (optional if using Docker)
+- **Docker**: [Download](https://www.docker.com/get-started)
+- **Postman**: [Download](https://www.postman.com/downloads/)
 
-### Installation
+### Installation (Without Docker)
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/restapi.git
+   git clone https://github.com/Dinidu21/restapi.git
    cd restapi
    ```
 
-2. **Set Up PostgreSQL**:
-   - Create a database named `restapi_ordermgt`:
-     ```sql
-     CREATE DATABASE restapi_ordermgt;
-     ```
-   - Update the `application.properties` file in `src/main/resources` with your PostgreSQL credentials:
-     ```properties
-     spring.datasource.url=jdbc:postgresql://localhost:5432/restapi_ordermgt
-     spring.datasource.username=postgres
-     spring.datasource.password=your-password
-     spring.jpa.hibernate.ddl-auto=update
-     spring.jpa.show-sql=true
-     spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-     ```
+2. **Configure PostgreSQL**:
+    - Create a database:
+      ```sql
+      CREATE DATABASE restapi_ordermgt;
+      ```
+    - Update `src/main/resources/application.properties`:
+      ```properties
+      spring.datasource.url=jdbc:postgresql://localhost:5432/restapi_ordermgt
+      spring.datasource.username=postgres
+      spring.datasource.password=your-password
+      spring.jpa.hibernate.ddl-auto=update
+      spring.jpa.show-sql=true
+      spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+      ```
 
 3. **Run the Application**:
-   - Build and run the project using Maven:
-     ```bash
-     mvn clean install
-     mvn spring-boot:run
-     ```
-   - The API will be available at `http://localhost:8080`.
+   ```bash
+   mvn clean install
+   mvn spring-boot:run
+   ```
+   The API will be accessible at `http://localhost:8080/api/v1/`.
 
-4. **Set Up Database Schema**:
-   - Execute the provided SQL script to create tables and insert sample data:
-     ```sql
-     -- Connect to the database
-     \c restapi_ordermgt
+4. **Initialize Database**:
+    - Execute the provided SQL script (`init.sql`) to set up tables and seed data.
 
-     -- Set the search path
-     SET search_path TO public;
+### Installation (With Docker)
 
-     -- Create tables
-     CREATE TABLE public.users (
-         id BIGSERIAL PRIMARY KEY,
-         username VARCHAR(50) NOT NULL UNIQUE,
-         email VARCHAR(255) NOT NULL UNIQUE,
-         full_name VARCHAR(100) NOT NULL,
-         status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
-         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-         updated_at TIMESTAMP,
-         CONSTRAINT valid_status CHECK (status IN ('ACTIVE', 'INACTIVE', 'SUSPENDED'))
-     );
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/Dinidu21/restapi.git
+   cd restapi
+   ```
 
-     -- [Include other table definitions from previous response]
+2. **Build and Run with Docker Compose**:
+    - Ensure Docker and Docker Compose are installed.
+    - Build the application JAR:
+      ```bash
+      mvn clean install
+      ```
+    - Run the application and database:
+      ```bash
+      docker-compose up --build
+      ```
+    - The API will be available at `http://localhost:8080/api/v1/`, and the database will be accessible on `localhost:5432`.
 
-     -- Insert sample data
-     INSERT INTO public.users (username, email, full_name, status, created_at, updated_at)
-     VALUES ('johndoe', 'john.doe@example.com', 'John Doe', 'ACTIVE', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-     -- [Include other insert statements]
-     ```
+3. **Stop the Containers**:
+   ```bash
+   docker-compose down -v
+   ```
++  The `-v` flag removes the database volume to ensure a clean state on restart.
 
-### API Usage
-
-The API provides endpoints for managing users, products, orders, and order items. Below is an example of creating a user using the Postman collection.
+### API Usage Example
 
 #### Create a User
-- **Endpoint**: `POST /api/v1/users`
-- **Content-Type**: `application/json`
-- **Request Body**:
+- **Endpoint**: `POST users`
+- **Request**:
   ```json
   {
       "username": "dinidu",
@@ -119,30 +125,27 @@ The API provides endpoints for managing users, products, orders, and order items
 - **Response** (201 Created):
   ```json
   {
-      "id": 1,
-      "username": "dinidu",
-      "email": "dinidu@example.com",
-      "fullName": "Dinidu Sachintha",
-      "status": "ACTIVE",
-      "createdAt": "2025-07-04T13:07:00.123456",
-      "updatedAt": "2025-07-04T13:07:00.123456"
+      "success": true,
+      "message": "User created successfully",
+      "data": {
+          "id": 1,
+          "username": "dinidu",
+          "email": "dinidu@example.com",
+          "fullName": "Dinidu Sachintha",
+          "status": "ACTIVE",
+          "createdAt": "2025-07-06T17:04:00.123456",
+          "updatedAt": "2025-07-06T17:04:00.123456"
+      },
+      "metadata": {}
   }
   ```
 
-#### Postman Collection
-- Import the Postman collection for comprehensive API testing:
-  [Order Management API Collection](https://documenter.getpostman.com/view/28172939/2sB34bM4AW)[](https://documenter.getpostman.com/view/9625258/SzS8tQrQ)
-- Follow the instructions in the collection to test endpoints with sample requests and responses.
+- **Postman Collection**: Test all endpoints using the [Postman Collection](https://documenter.getpostman.com/view/28172939/2sB34bM4AW).
 
 ### Running Tests
+- **API Tests**: Use the Postman collection for manual or automated testing.
 
-- **Unit Tests**: Run unit tests using Maven:
-  ```bash
-  mvn test
-  ```
-- **API Tests**: Use the Postman collection to test endpoints manually or automate tests using Postman’s scripting features.
-
-### Project Structure
+## 🏗️ Project Structure
 
 ```
 restapi/
@@ -155,40 +158,52 @@ restapi/
 │   │   │   ├── services/        # Business logic
 │   │   │   └── repositories/    # JPA repositories
 │   │   └── resources/
-│   │       └── application.properties  # Configuration
-├── pom.xml                      # Maven dependencies
-└── README.md                    # Project documentation
+│   │       └── application.properties
+├── Dockerfile                  # Docker configuration
+├── docker-compose.yml         # Docker Compose configuration
+├── init.sql                   # Database initialization script
+├── pom.xml
+└── README.md
 ```
+
+## 🌟 Why This Project?
+
+This project demonstrates my ability to build a production-grade REST API with:
+- **Scalability**: Pagination, optimized queries, and Docker support for easy deployment.
+- **Maintainability**: Clean code, DTOs, logging, and comprehensive documentation.
+- **Reliability**: Transactional integrity, SQL constraints, and robust error handling.
+- **Security**: Input validation and custom exceptions to mitigate vulnerabilities.
+- **DevOps Readiness**: Containerized with Docker and orchestrated with Docker Compose for production environments.
 
 ## 🤝 Contributing
 
-We welcome contributions to enhance the Order Management REST API! Please follow these steps:
+Contributions are welcome! To contribute:
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/your-feature`).
+3. Commit changes (`git commit -m "Add your feature"`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Open a pull request with a detailed description.
 
-1. **Fork the Repository**: Create a fork of this repository.
-2. **Create a Branch**: Use a descriptive branch name (e.g., `feature/add-authentication`).
-3. **Make Changes**: Implement your feature or bug fix.
-4. **Run Tests**: Ensure all tests pass (`mvn test`).
-5. **Submit a Pull Request**: Provide a clear description of your changes and reference any related issues.
-
-Please adhere to the [Code of Conduct](CODE_OF_CONDUCT.md) and follow the [Contribution Guidelines](CONTRIBUTING.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for our code of conduct.
 
 ## 📜 License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
 ## 📬 Contact
 
-For questions or feedback, reach out to:
-- **Email**: dinidu@example.com
-- **GitHub Issues**: Open an issue in this repository.
+- **Email**: dinidusachintha3@gmail.com
+- **GitHub**: [Dinidu21](https://github.com/Dinidu21)
+- **Issues**: Open an issue on this repository.
 
 ## 🙌 Acknowledgments
 
-- [Spring Boot](https://spring.io/projects/spring-boot) for the robust framework.
-- [PostgreSQL](https://www.postgresql.org/) for reliable database management.
-- [Postman](https://www.postman.com/) for API testing and documentation.[](https://www.postman.com/api-documentation-tool/)
-- Contributors and open-source community for inspiration and support.
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Docker](https://www.docker.com/)
+- [Postman](https://www.postman.com/)
+- Open-source community for inspiration and resources.
 
 ---
 
-⭐ **Star this repository** if you find it useful! Contributions and feedback are greatly appreciated.
+⭐ **Star this repository** if you find it valuable! Feedback and contributions are greatly appreciated.
