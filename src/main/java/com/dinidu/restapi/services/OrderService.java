@@ -63,7 +63,7 @@ public class OrderService {
         // Create order entity
         Order order = Order.builder()
                 .user(user)
-                .status(Order.OrderStatus.PENDING)
+                .status(orderDTO.getStatus() != null ? orderDTO.getStatus() : Order.OrderStatus.PENDING)
                 .build();
 
         // Process order items
