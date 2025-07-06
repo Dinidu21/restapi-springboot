@@ -80,7 +80,8 @@ public class ProductController {
     }
 
     @GetMapping("/low-stock")
-    public ResponseEntity<List<ProductDTO>> getLowStockProducts(@RequestParam(defaultValue = "10") Integer threshold) {
+    public ResponseEntity<List<ProductDTO>> getLowStockProducts(
+            @RequestParam(defaultValue = "10") Integer threshold) {
         log.info("GET /products/low-stock?threshold={} - Fetching low stock products", threshold);
         List<ProductDTO> products = productService.getLowStockProducts(threshold);
         return ResponseEntity.ok(products);
