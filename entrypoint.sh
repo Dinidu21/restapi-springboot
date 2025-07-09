@@ -3,8 +3,10 @@
 # Check for required environment variables
 required_vars="SPRING_DATASOURCE_URL SPRING_DATASOURCE_USERNAME SPRING_DATASOURCE_PASSWORD SERVER_SERVLET_CONTEXT_PATH SPRING_JPA_HIBERNATE_DDL_AUTO"
 missing_vars=""
+
 for var in $required_vars; do
-    if [ -z "${!var}" ]; then
+    eval val=\$$var
+    if [ -z "$val" ]; then
         missing_vars="$missing_vars $var"
     fi
 done
@@ -27,6 +29,12 @@ spring.datasource.hikari.maximum-pool-size=10
 logging.level.org.springframework=INFO
 logging.level.com.dinidu=DEBUG
 logging.file.name=/app/logs/app.log
+
+management.endpoints.web.exposure.include=health,info
+management.endpoint.health.probes.enabled=true
+management.endpoints.enabled-by-default=true
+management.server.port=8080
+management.server.base-path=/actuator
 EOF
 
 # Verify application.properties creation
