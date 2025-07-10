@@ -1,6 +1,6 @@
 services:
   app:
-    image: dinidu21/restapi:latest
+    image: dinidu21/restapi:0.0.1-d05d4a44
     container_name: restapi-app
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/${POSTGRES_DB}
